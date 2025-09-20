@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}{{ department }} - {{ branch }} - Select Year{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background: #f0f2f5;
+        padding: 20px;
+    }
+
+    h2 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 24px;
+    }
+
+    ul {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+
+    li a {
+        display: block;
+        text-decoration: none;
+        background: #6A82FB;
+        color: #fff;
+        padding: 15px 20px;
+        border-radius: 12px;
+        text-align: center;
+        font-size: 18px;
+        transition: 0.3s;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    li a:hover {
+        background: #5066D1;
+        transform: translateY(-2px);
+        box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+    }
+
+    @media (max-width: 480px) {
+        h2 { font-size: 20px; }
+        li a { font-size: 16px; padding: 12px 15px; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="content-container">
+    <h2>{{ department }} - {{ branch }} - Select Year</h2>
+    <ul>
+        {% for yr in years %}
+        <li><a href="{{ url_for('sheet_view', department=department, branch=branch, year=yr) }}">{{ yr }}</a></li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
