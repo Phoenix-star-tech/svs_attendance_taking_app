@@ -14,16 +14,9 @@ scope = [
 ]
 
 # Get the service account JSON from environment variable
-creds_json = os.environ.get("GOOGLE_CREDS")
-if not creds_json:
-    raise ValueError("Environment variable GOOGLE_CREDS not set!")
-
-try:
-    creds_dict = json.loads(creds_json)
-except json.JSONDecodeError:
-    raise ValueError("GOOGLE_CREDS is not valid JSON")
-
-creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+# Load service account JSON file directly (Option 2)
+file_path = os.path.join(os.getcwd(), "credentials.json")  # replace with your file name
+creds = ServiceAccountCredentials.from_json_keyfile_name(file_path, scope)
 client = gspread.authorize(creds)
 
 # Map department → branch → year → sheet_id
@@ -135,6 +128,7 @@ def submit_absent():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
 
