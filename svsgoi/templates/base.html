@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SVS{% endblock %}</title>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+
+    <!-- Base CSS -->
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; }
+
+        body {
+            background: linear-gradient(135deg, #6a11cb, #2575fc);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .content-container, .login-container {
+            background: #fff;
+            padding: 40px 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 25px;
+        }
+
+        /* Inputs */
+        .input-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px 45px 14px 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        .input-group input:focus {
+            border-color: #2575fc;
+            box-shadow: 0 0 5px rgba(37,117,252,0.5);
+        }
+
+        /* Eye toggle */
+        .input-group .eye {
+            position: absolute;
+            top: 50%;
+            right: 12px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+        .input-group .eye:hover { transform: translateY(-50%) scale(1.2); }
+
+        /* Buttons */
+        .login-btn, .btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #2575fc;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .login-btn:hover, .btn:hover { background: #1455c4; }
+        .login-btn:disabled { background: #a0c4ff; cursor: not-allowed; }
+
+        /* Spinner */
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #fff;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* Popups */
+        .popup {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #ff4d4d;
+            color: #fff;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: none;
+            z-index: 1000;
+            animation: popupShow 0.5s ease forwards;
+        }
+        @keyframes popupShow { 0% { opacity: 0; transform: translate(-50%, -20px); } 100% { opacity: 1; transform: translate(-50%, 0); } }
+
+        /* Lists (department/branch/year) */
+        ul.list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        ul.list li a {
+            display: block;
+            text-decoration: none;
+            background: #4a90e2;
+            color: #fff;
+            padding: 15px 20px;
+            border-radius: 12px;
+            text-align: center;
+            font-size: 18px;
+            transition: 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        ul.list li a:hover {
+            background: #357ABD;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+        }
+
+        @media (max-width: 480px) {
+            h2 { font-size: 20px; }
+            ul.list li a { font-size: 16px; padding: 12px 15px; }
+            .login-btn, .btn { padding: 12px; font-size: 15px; }
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Popup message -->
+    <div class="popup" id="popup"></div>
+
+    {% block content %}{% endblock %}
+
+    <!-- Base JS -->
+    <script>
+        function togglePassword(passwordId, eyeId) {
+            const password = document.getElementById(passwordId);
+            const eye = document.getElementById(eyeId);
+            if(password.type === 'password') {
+                password.type = 'text';
+                eye.textContent = '🙈';
+            } else {
+                password.type = 'password';
+                eye.textContent = '👁️';
+            }
+        }
+
+        function showPopup(message) {
+            const popup = document.getElementById('popup');
+            popup.textContent = message;
+            popup.style.display = 'block';
+            setTimeout(() => { popup.style.display = 'none'; }, 2500);
+        }
+
+        function handleLogin(event, usernameCheck, passwordCheck) {
+            event.preventDefault();
+            const form = event.target;
+            const username = form.username.value;
+            const password = form.password.value;
+
+            if(username !== usernameCheck || password !== passwordCheck) {
+                showPopup("Please enter the correct details");
+                return false;
+            }
+
+            const btn = form.querySelector('.login-btn');
+            const spinner = btn.querySelector('.spinner');
+            const btnText = btn.querySelector('.btn-text');
+
+            btn.disabled = true;
+            spinner.style.display = 'inline-block';
+            btnText.style.display = 'none';
+
+            setTimeout(() => { form.submit(); }, 1500);
+        }
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
