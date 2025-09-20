@@ -26,11 +26,7 @@ creds_dict = {
     "universe_domain": "googleapis.com"
 }
 
-# Load credentials from environment variable
-creds_json = os.environ.get("GOOGLE_CREDS")  # Set this in Render or .env locally
-if not creds_json:
-    raise Exception("GOOGLE_CREDS environment variable not set!")
-
+creds_json = os.environ.get("GOOGLE_CREDS")
 creds_dict = json.loads(creds_json)
 creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 client = gspread.authorize(creds)
@@ -144,4 +140,5 @@ def submit_absent():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
