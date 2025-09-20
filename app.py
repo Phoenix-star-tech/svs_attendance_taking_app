@@ -3,15 +3,24 @@ import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import datetime
 from functools import wraps
+import os, json
 
 app = Flask(__name__)
 app.secret_key = "secret123"
 
-# Google Sheets Auth
+# ---------------- Google Sheets Auth ----------------
 scope = ["https://spreadsheets.google.com/feeds",
          "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+
+# Load credentials from environment variable
+creds_json = os.environ.get("GOOGLE_CREDS")  # Set this in Render or .env locally
+if not creds_json:
+    raise Exception("GOOGLE_CREDS environment variable not set!")
+
+creds_dict = json.loads(creds_json)
+creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 client = gspread.authorize(creds)
+# -----------------------------------------------------
 
 # Map department → branch → year → sheet_id
 sheet_map = {
@@ -34,7 +43,7 @@ sheet_map = {
     }
 }
 
-MASTER_FILE_ID = "11gy7F7TgcgDsfkT0Im9LUxo_T5ygSX6_6_cnC77gzmk"
+MASTER_FILE_ID = "11gy7F7TgcgDsfkT0Im9LUxo_T5ygSX6_6_cnC77gzmk" 
 
 # ---------------- Login Required Decorator ----------------
 def login_required(f):
@@ -67,7 +76,6 @@ def logout():
 @login_required
 def home():
     return render_template("departments.html", departments=sheet_map.keys())
-
 
 @app.route("/branch/<department>")
 @login_required
