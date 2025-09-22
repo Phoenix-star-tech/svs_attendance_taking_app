@@ -8,20 +8,20 @@ import os, json
 app = Flask(__name__)
 app.secret_key = "secret123"
 
+# ---------------- Google Sheets Auth ----------------
 scope = [
     "https://spreadsheets.google.com/feeds",
     "https://www.googleapis.com/auth/drive"
 ]
 
-file_path = "/etc/secrets/credentials.json"
+# Load credentials.json from Render Secret (environment file)
+cred_path = "/etc/secrets/credentials.json"  # Render mounts secret files here
+with open(cred_path) as f:
+    creds_dict = json.load(f)
 
-# Fallback: if the file doesn't exist (e.g. during local development),
-# try loading from working directory
-if not os.path.exists(file_path):
-    file_path = os.path.join(os.getcwd(), "credentials.json")
-
-creds = ServiceAccountCredentials.from_json_keyfile_name(file_path, scope)
+creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
 client = gspread.authorize(creds)
+# -----------------------------------------------------
 
 
 # Map department → branch → year → sheet_id
@@ -133,6 +133,7 @@ def submit_absent():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
 
