@@ -28,7 +28,7 @@ client = gspread.authorize(creds)
 sheet_map = {
     "BTech": {
         "CSE": {"1": "1Yh6b4q4zD8KJex2924cwjU12SyVt60hFVKb0KmDnCvw", "2": "1Yh6b4q4zD8KJex2924cwjU12SyVt60hFVKb0KmDnCvw", "3": "SHEET_ID_3", "4": "SHEET_ID_4"},
-        "AIML": {"1": "SHEET_ID_5", "2": "SHEET_ID_6"},
+        "AIML": {"1": "SHEET_ID_5", "2": "SHEET_ID_6", "3": "1ay1DgGfGR7gX9P2WepVCGtmr0iX80x_DzqAL8YO3Ue0", "4":"SHEET_ID_6"},
         "DS": {"1": "SHEET_ID_7"},
         "ECE": {"1": "SHEET_ID_8"},
         "EEE": {"1": "SHEET_ID_9"}
@@ -133,6 +133,7 @@ def submit_absent():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
 
