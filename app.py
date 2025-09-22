@@ -13,11 +13,16 @@ scope = [
     "https://www.googleapis.com/auth/drive"
 ]
 
-# Get the service account JSON from environment variable
-# Load service account JSON file directly (Option 2)
-file_path = os.path.join(os.getcwd(), "credentials.json")  # replace with your file name
+file_path = "/etc/secrets/credentials.json"
+
+# Fallback: if the file doesn't exist (e.g. during local development),
+# try loading from working directory
+if not os.path.exists(file_path):
+    file_path = os.path.join(os.getcwd(), "credentials.json")
+
 creds = ServiceAccountCredentials.from_json_keyfile_name(file_path, scope)
 client = gspread.authorize(creds)
+
 
 # Map department → branch → year → sheet_id
 sheet_map = {
@@ -128,6 +133,7 @@ def submit_absent():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
 
 
 
