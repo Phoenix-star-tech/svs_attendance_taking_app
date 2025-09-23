@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Responsive Login</title>
+    <title>SVS Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
     <style>
         * {
@@ -26,9 +26,10 @@
             padding: 40px 30px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-            width: 90%;
+            width: 221%;
             max-width: 380px;
             position: relative;
+            left:15%;
             animation: fadeIn 1s ease;
         }
 
@@ -158,6 +159,26 @@
                 font-size: 15px;
             }
         }
+
+           
+  footer {
+      margin-top: auto;
+      background: none;
+      padding: 15px 0;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #6c757d;
+      position: relative;
+      left: -35%;
+    }
+    footer a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    footer .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
     </style>
 </head>
 <body>
@@ -181,6 +202,14 @@
         </form>
     </div>
 
+    <footer>
+        <div class="container">
+            <p>&copy; 2025-26 SVS Attendance System | Built with ❤️
+            <i class="fas fa-heart text-danger"></i> by 
+            <a href="https://phoenix-tech.onrender.com/">Phoenix</a></p>
+        </div>
+    </footer>
+    
     <script>
         function togglePassword() {
             const password = document.getElementById('password');
