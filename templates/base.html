@@ -12,14 +12,20 @@
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Roboto', sans-serif; }
 
-        body {
-            background: linear-gradient(135deg, #6a11cb, #2575fc);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
+body {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;  /* stack content + footer */
+}
+
+.main-content {
+    flex: 1; /* pushes footer down */
+    display: flex;1
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
 
         .content-container, .login-container {
             background: #fff;
@@ -29,6 +35,7 @@
             width: 100%;
             max-width: 400px;
             position: relative;
+            left:30%;
             animation: fadeIn 0.8s ease;
         }
 
@@ -157,17 +164,50 @@
             h2 { font-size: 20px; }
             ul.list li a { font-size: 16px; padding: 12px 15px; }
             .login-btn, .btn { padding: 12px; font-size: 15px; }
+            .content-container, .login-container{
+                position:relative;
+                left:0%;
+            }
         }
+
+        
+  footer {
+      margin-top: auto;
+      background: none;
+      padding: 15px 0;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+    footer a {
+      color: #007bff;
+      text-decoration: none;
+    }
+    footer .container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
     </style>
 
     {% block extra_css %}{% endblock %}
 </head>
 <body>
     <!-- Popup message -->
-    <div class="popup" id="popup"></div>
+     <center>
+<div class="popup" id="popup"></div><br>
 
-    {% block content %}{% endblock %}
-
+    <div class="main-content">
+        {% block content %}{% endblock %}
+    </div>
+</center>
+    <footer>
+        <div class="container">
+            <p>&copy; 2025-26 SVS Attendance System | Built with ❤️
+            <i class="fas fa-heart text-danger"></i> by 
+            <a href="https://phoenix-tech.onrender.com/">Phoenix</a></p>
+        </div>
+    </footer>
+    
     <!-- Base JS -->
     <script>
         function togglePassword(passwordId, eyeId) {
